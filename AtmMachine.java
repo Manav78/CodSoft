@@ -1,71 +1,73 @@
 import java.util.Scanner;
-class bankAccount {
-    int balance=5000;
+
+class BankAccount {
+    int balance = 5000;
+
+    public void deposit(int amount) {
+        if (amount > 0) {
+            balance += amount;
+            System.out.println("✅ Successfully deposited: " + amount);
+        } else {
+            System.out.println("⚠️ Deposit amount must be positive.");
+        }
+    }
+
+    public void withdraw(int amount) {
+        if (amount <= 0) {
+            System.out.println("⚠️ Withdrawal amount must be positive.");
+        } else if (amount <= balance) {
+            balance -= amount;
+            System.out.println("✅ Withdrawal Successful! Amount: " + amount);
+        } else {
+            System.out.println("❌ Insufficient balance. Current balance: " + balance);
+        }
+    }
+
+    public void checkBalance() {
+        System.out.println("💰 Your Current Balance = " + balance);
+    }
 }
-public class AtmMachine extends bankAccount {
-    int ch,Wamount,Damount;
+
+public class AtmMachine {
     Scanner sc = new Scanner(System.in);
-    void options(){
-        System.out.println("Enter Your Choice : ");
-        System.out.println("1.Withdraw");
-        System.out.println("2.Deposite");
-        System.out.println("3.Check Balance");
-        System.out.println("4.Exit");
-        ch =sc.nextInt();
+    BankAccount account = new BankAccount();
 
-        switch (ch) {
-            case 1:withdraw();
-                
-                break;
-            case 2:deposite();
-                
-                break;
-            case 3:Cbalance();
-                
-                break;
-            case 4: System.out.println("Good Bye...");
-                    return;
-        
-            default: System.out.println("Invalis Choice!");
-            System.out.println();
-                    options();
-                break;
-        }
+    public void start() {
+        int choice;
+        do {
+            System.out.println("\n=== ATM Menu ===");
+            System.out.println("1. Withdraw");
+            System.out.println("2. Deposit");
+            System.out.println("3. Check Balance");
+            System.out.println("4. Exit");
+            System.out.print("Enter Your Choice: ");
+            choice = sc.nextInt();
 
-    }
-    void withdraw(){
-        System.out.println("Enter Withdrawal Amount : ");
-        Wamount=sc.nextInt();
-        if(Wamount<balance){
-            System.out.println("Sufficent balance for withdrawals");
-            balance=balance-Wamount;
-            System.out.println("Withdrawal Successfull...");
-            System.out.println();
-            options();
-        }else{
-            System.out.println("Insufficent balance for withdrawals");
-            System.out.println();
-            options();
-        }
-       
-    }
-    void deposite(){
-        System.out.println("Enter Amount to be Deposite : ");
-        Damount=sc.nextInt();
-        balance=balance+Damount;
-        System.out.println("Deposite Successfull...");
-        System.out.println();
-        options();
-    }
-    void Cbalance(){
-        System.out.println("Your Current Balance = "+balance);
-        System.out.println();
-        options();
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter Withdrawal Amount: ");
+                    int wAmount = sc.nextInt();
+                    account.withdraw(wAmount);
+                    break;
+                case 2:
+                    System.out.print("Enter Deposit Amount: ");
+                    int dAmount = sc.nextInt();
+                    account.deposit(dAmount);
+                    break;
+                case 3:
+                    account.checkBalance();
+                    break;
+                case 4:
+                    System.out.println("👋 Good Bye...");
+                    break;
+                default:
+                    System.out.println("⚠️ Invalid Choice!");
+            }
+        } while (choice != 4);
     }
 
     public static void main(String[] args) {
-        AtmMachine am= new AtmMachine();
-        am.options();
+        AtmMachine atm = new AtmMachine();
+        atm.start();
     }
 }
-
